@@ -13,6 +13,10 @@ public class gameStats : MonoBehaviour
     //flag for tracking if this is first time game is run by user
     public static bool firstTimer = false;
 
+    //sound/music flags
+    public static bool musicOn = false;
+    public static bool soundOn = true;
+
     //progress variables
     public static string username = "Grinch";  //will be updated when user login
     public static int currentLv;

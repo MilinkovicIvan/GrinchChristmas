@@ -15,6 +15,9 @@ public class MenuController : MonoBehaviour
     //link to login panel ui
     public GameObject loginUI;
 
+    //link to settings panel ui
+    public GameObject settingsUI;
+
     //link to alertMessage and submit button
     [SerializeField] private TextMeshProUGUI alertMessage;
     [SerializeField] private Button createButton;
@@ -33,21 +36,43 @@ public class MenuController : MonoBehaviour
     [SerializeField] private string fetchProgressURI = "http://localhost:22222/progress/fetch";
     [SerializeField] private string updateProgressURI = "http://localhost:22222/progress/update";
 
+    //links to settings buttons
+    public TextMeshProUGUI musicText;
+    public TextMeshProUGUI soundText;
+
     // function for triggering scenes
     public void LoadScene(string name) 
     {
+        //if sound on,play click sound
+        if (gameStats.soundOn)
+        {
+            SoundController.playSound("click");
+        }
+
         SceneManager.LoadScene(name);
     }
 
     // function to open login window when cloud backup btn is clicked
     public void openLoginWindow() 
     {
+        //if sound on,play click sound
+        if (gameStats.soundOn)
+        {
+            SoundController.playSound("click");
+        }
+
         loginUI.SetActive(true);
     }
 
     // function to close login window when user click x button 
     public void closeLoginWindow()
-    {             
+    {
+        //if sound on,play click sound
+        if (gameStats.soundOn)
+        {
+            SoundController.playSound("click");
+        }
+
         //if this is first timer, and is logged in
         if (gameStats.userLoggedin == true && gameStats.firstTimer == true)
         {
@@ -70,9 +95,86 @@ public class MenuController : MonoBehaviour
 
     }
 
+    // function to open settings window when settings btn is clicked
+    public void openSettingsWindow()
+    {
+        //if sound on,play click sound
+        if (gameStats.soundOn)
+        {
+            SoundController.playSound("click");
+        }
+
+        settingsUI.SetActive(true);
+    }
+
+    // function to close login window when user click x button 
+    public void closeSettingsWindow()
+    {        
+        //if sound on,play click sound
+        if (gameStats.soundOn)
+        {
+            SoundController.playSound("click");
+        }
+
+        //turn off login ui
+        settingsUI.SetActive(false);
+    }
+
+    //function to toggle music
+    public void toggleMusic() 
+    {
+        //if sound on,play click sound
+        if (gameStats.soundOn)
+        {
+            SoundController.playSound("click");
+        }
+
+        //toggle music
+        gameStats.musicOn = !gameStats.musicOn;
+
+        //toggle text ontop of icon
+        if (!gameStats.musicOn) {
+            musicText.text = "/";
+            SoundController.stopMusic();
+        }
+        else {
+            musicText.text = "";
+            SoundController.playMusic();
+        }
+    }
+
+    //function to toggle sound
+    public void toggleSound() 
+    {
+        //if sound on,play click sound
+        if (gameStats.soundOn) {
+            SoundController.playSound("click");
+        }
+
+        //toggle sound
+        gameStats.soundOn = !gameStats.soundOn;
+
+        //toggle text ontop of icon
+        if (!gameStats.soundOn)
+        {
+            soundText.text = "/";
+        }
+        else
+        {
+            soundText.text = "";
+        }
+    }
+
+
     // function which is triggered when user click create button from sign up/sign in window
     public void onCreateClicked()
     {
+        //if sound on,play click sound
+        if (gameStats.soundOn)
+        {
+            SoundController.playSound("click");
+        }
+
         // give user a message and make buttons non interactable
         alertMessage.text = "Doing sign up...";
         createButton.interactable = false;
@@ -85,6 +187,12 @@ public class MenuController : MonoBehaviour
     // function which is triggered when user click login button from sign up/sign in window
     public void onLoginClicked() 
     {
+        //if sound on,play click sound
+        if (gameStats.soundOn)
+        {
+            SoundController.playSound("click");
+        }
+
         // give user a message and make buttons non interactable
         alertMessage.text = "Doing sign in...";
         createButton.interactable = false;
@@ -92,9 +200,6 @@ public class MenuController : MonoBehaviour
 
         // trigger doSignUpSignIn coroutine
         StartCoroutine(doSignIn());
-
-     
-
     }
 
     // coroutine which will send web request to our server and try doing sign up functionality
