@@ -16,17 +16,19 @@ public class localDB : MonoBehaviour
         //check if db exist
         if (File.Exists("progress.db"))
         {
-            Debug.Log("DB already exists");
+            //Debug.Log("DB already exists");
         }
         //if not,create it
         else 
         {
             // creating local db
             createLocalDB();
+            gameStats.firstTimer = true;
+            //Debug.Log(gameStats.firstTimer + " from localDB");
 
             // adding values to progress table columns 
             addProgressValues(1, 5, 20, "2,1,1,0,0,0,0,0,0,0");
-
+/*
             // displaying progress from db
             int currentLv = getCurrentLv();
             Debug.Log("Current LV: " + currentLv);
@@ -68,6 +70,7 @@ public class localDB : MonoBehaviour
             Debug.Log("Updated GOLD: " + updatedGold);
             updatedPowerupsFromDB = getPowerups();
             Debug.Log("Updated powerups string from DB: " + updatedPowerupsFromDB);
+*/
         }
     }
 
