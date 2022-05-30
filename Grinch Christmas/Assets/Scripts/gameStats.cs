@@ -6,7 +6,9 @@ public class gameStats : MonoBehaviour
 {
     //ref to localDB script
     public localDB localDB;
-    
+
+    //gameplay started flag
+    public static bool gameplayStarted = false;
 
     //flag for keeping track if user is logged in 
     public static bool userLoggedin = false;
@@ -50,5 +52,10 @@ public class gameStats : MonoBehaviour
     void Update()
     {
         
+    }
+
+    //function which will flip gameplayStarted flag to true;
+    public void flipGameplayStarted() {
+        gameplayStarted = true;
     }
 }

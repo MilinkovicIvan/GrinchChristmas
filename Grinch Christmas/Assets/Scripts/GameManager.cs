@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
             // when scene is loaded, restarted, dont destroy the object
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
         // else destroy it
         else if (instance != null){

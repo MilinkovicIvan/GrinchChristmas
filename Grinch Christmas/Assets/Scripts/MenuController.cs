@@ -18,6 +18,22 @@ public class MenuController : MonoBehaviour
     //link to settings panel ui
     public GameObject settingsUI;
 
+    //link to shop
+    public GameObject shop;
+
+    //link to inv
+    public GameObject inv;
+
+    //link to shop alert message
+    public TextMeshProUGUI shopAlertMessage;
+    //link to life and gold text
+    public TextMeshProUGUI lifeText;
+    public TextMeshProUGUI goldText;
+    //link to inv powerups texts
+    public TextMeshProUGUI hammerText;
+    public TextMeshProUGUI bombText;
+    public TextMeshProUGUI movesText;
+
     //link to alertMessage and submit button
     [SerializeField] private TextMeshProUGUI alertMessage;
     [SerializeField] private Button createButton;
@@ -40,6 +56,24 @@ public class MenuController : MonoBehaviour
     public TextMeshProUGUI musicText;
     public TextMeshProUGUI soundText;
 
+    //link to rewardedAdsButton
+    [SerializeField] RewardedAdsButton rewardedAdsButton;
+
+    void Start() 
+    {
+        // set life and gold text to match whats in gameStats,also set powerups amount to match gameStats
+        if (gameStats.gameplayStarted == true) { 
+            lifeText.text = gameStats.lifeAmount.ToString();
+            goldText.text = gameStats.goldAmount.ToString();
+            hammerText.text = gameStats.powerups[0].ToString();
+            bombText.text = gameStats.powerups[2].ToString();
+            movesText.text = gameStats.powerups[4].ToString();
+            //flip flag back to false
+            gameStats.gameplayStarted = false;
+        }
+
+    }
+
     // function for triggering scenes
     public void LoadScene(string name) 
     {
@@ -48,8 +82,8 @@ public class MenuController : MonoBehaviour
         {
             SoundController.playSound("click");
         }
-
         SceneManager.LoadScene(name);
+        
     }
 
     // function to open login window when cloud backup btn is clicked
@@ -105,6 +139,52 @@ public class MenuController : MonoBehaviour
         }
 
         settingsUI.SetActive(true);
+    }
+
+    // function to open shop window when shop btn is clicked
+    public void openShopWindow()
+    {
+        //if sound on,play click sound
+        if (gameStats.soundOn)
+        {
+            SoundController.playSound("click");
+        }
+        //reset shop message
+        shopAlertMessage.text = "";
+
+        inv.SetActive(false);
+        shop.SetActive(true);
+
+        //loading ad
+        rewardedAdsButton.LoadAd();
+    }
+
+    // function to focus map when map btn is clicked
+    public void focusMapWindow()
+    {
+        //if sound on,play click sound
+        if (gameStats.soundOn)
+        {
+            SoundController.playSound("click");
+        }
+
+        //turning off shop,inv 
+        shop.SetActive(false);
+        inv.SetActive(false);
+    }
+
+    // function to focus map when map btn is clicked
+    public void openInventoryWindow()
+    {
+        //if sound on,play click sound
+        if (gameStats.soundOn)
+        {
+            SoundController.playSound("click");
+        }
+
+        //atm just turning off shop
+        shop.SetActive(false);
+        inv.SetActive(true);
     }
 
     // function to close login window when user click x button 

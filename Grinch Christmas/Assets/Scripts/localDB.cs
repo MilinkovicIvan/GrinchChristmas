@@ -8,26 +8,43 @@ using System.IO;    //used to check if file exist
 public class localDB : MonoBehaviour
 {
     // name of the db and its location
-    private string localDBName = "URI=file:progress.db";
+    //private string localDBName = "URI=file:progress.db";
+    //"URI=file:" + Application.persistentDataPath + "/Inventory.db";
+    //private string localDBName = "URI=file:" + Application.persistentDataPath + "/progress.db";
+    //private string localDBName = "URI=file:" + Application.persistentDataPath + "/progress.db";
+    /*   private string localDBName;
+
+       private void Awake()
+       {
+           localDBName = Application.persistentDataPath + "/progress.db";
+       }*/
+
+    private string localDBName;
+
+    private void Awake()
+    {
+        localDBName = "URI=file:" + Application.persistentDataPath + "/progress.db";
+    }
 
     // Start is called before the first frame update
     void Start()
     {
         //check if db exist
-        if (File.Exists("progress.db"))
+        if (File.Exists(Application.persistentDataPath + "/progress.db"))
+        //if (File.Exists("progress.db"))
         {
-            //Debug.Log("DB already exists");
+            Debug.Log("DB already exists");
         }
         //if not,create it
         else 
         {
             // creating local db
-            createLocalDB();
-            gameStats.firstTimer = true;
-            //Debug.Log(gameStats.firstTimer + " from localDB");
+            createLocalDB();           
 
             // adding values to progress table columns 
             addProgressValues(1, 5, 20, "2,1,1,0,0,0,0,0,0,0");
+            
+            gameStats.firstTimer = true;
 /*
             // displaying progress from db
             int currentLv = getCurrentLv();
