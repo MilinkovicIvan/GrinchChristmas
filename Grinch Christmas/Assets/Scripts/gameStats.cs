@@ -38,14 +38,7 @@ public class gameStats : MonoBehaviour
         goldAmount = localDB.getGoldAmount();
         powerups = localDB.getPowerups();
 
-        //Debug.Log(firstTimer + " from gameStats");
-
-/*
-        Debug.Log(currentLv);
-        Debug.Log(lifeAmount);
-        Debug.Log(goldAmount);
-        Debug.Log(powerups[1]);
-*/
+        //Debug.Log(firstTimer + " from gameStats, firstTimer");
     }
 
     // Update is called once per frame

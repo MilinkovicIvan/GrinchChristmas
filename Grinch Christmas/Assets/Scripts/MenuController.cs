@@ -44,13 +44,18 @@ public class MenuController : MonoBehaviour
     [SerializeField] private TMP_InputField passwordInput;
 
     //authentication uri's
-    [SerializeField] private string createURI = "http://localhost:22222/authentication/create";
-    [SerializeField] private string loginURI = "http://localhost:22222/authentication/login";
+    //[SerializeField] private string createURI = "http://localhost:22222/authentication/create";
+    //[SerializeField] private string loginURI = "http://localhost:22222/authentication/login";
+    [SerializeField] private string createURI = "https://grinch-christmas.herokuapp.com/authentication/create";
+    [SerializeField] private string loginURI = "https://grinch-christmas.herokuapp.com/authentication/login";
 
     //progress uri's
-    [SerializeField] private string createProgressURI = "http://localhost:22222/progress/create";
-    [SerializeField] private string fetchProgressURI = "http://localhost:22222/progress/fetch";
-    [SerializeField] private string updateProgressURI = "http://localhost:22222/progress/update";
+    //[SerializeField] private string createProgressURI = "http://localhost:22222/progress/create";
+    //[SerializeField] private string fetchProgressURI = "http://localhost:22222/progress/fetch";
+    //[SerializeField] private string updateProgressURI = "http://localhost:22222/progress/update";
+    [SerializeField] private string createProgressURI = "https://grinch-christmas.herokuapp.com/progress/create";
+    [SerializeField] private string fetchProgressURI = "https://grinch-christmas.herokuapp.com/progress/fetch";
+    [SerializeField] private string updateProgressURI = "https://grinch-christmas.herokuapp.com/progress/update";
 
     //links to settings buttons
     public TextMeshProUGUI musicText;
@@ -117,8 +122,8 @@ public class MenuController : MonoBehaviour
             StartCoroutine(createOnlineProgressRecord());
 
         }
-
-        if (gameStats.userLoggedin == true) 
+        //this will work second time user login
+        else if (gameStats.userLoggedin == true) 
         {
             //update record with dummy data for now
             StartCoroutine(updateOnlineProgressRecord());
@@ -445,8 +450,8 @@ public class MenuController : MonoBehaviour
                 createButton.interactable = false;
                 loginButton.interactable = false;
 
-                //Debug.Log(gameStats.userLoggedin);
-                //Debug.Log(gameStats.username);
+                Debug.Log(gameStats.userLoggedin + " from menuController, userLoggedIn");
+                Debug.Log(gameStats.username);
             }
             else 
             {

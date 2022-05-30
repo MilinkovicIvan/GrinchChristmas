@@ -29,7 +29,14 @@ public class ShopController : MonoBehaviour
     }
 
     //function triggered with user clicking on buy life btn in shop
-    public void buyLife() {
+    public void buyLife() 
+    {
+        //if sound on,play click sound
+        if (gameStats.soundOn)
+        {
+            SoundController.playSound("click");
+        }
+
         //check to see if user have enough gold
         if (gameStats.goldAmount >= 10)
         {   //10 is price for life 
@@ -55,6 +62,12 @@ public class ShopController : MonoBehaviour
     //function triggered with user clicking on buy hammer btn in shop
     public void buyHammer()
     {
+        //if sound on,play click sound
+        if (gameStats.soundOn)
+        {
+            SoundController.playSound("click");
+        }
+
         //check to see if user have enough gold
         if (gameStats.goldAmount >= 5)
         {   //5 is price for hammer 
@@ -97,6 +110,12 @@ public class ShopController : MonoBehaviour
     //function triggered with user clicking on buy bomb btn in shop
     public void buyBomb()
     {
+        //if sound on,play click sound
+        if (gameStats.soundOn)
+        {
+            SoundController.playSound("click");
+        }
+
         //check to see if user have enough gold
         if (gameStats.goldAmount >= 20)
         {   //20 is price for bomb 
@@ -136,6 +155,12 @@ public class ShopController : MonoBehaviour
     //function triggered with user clicking on buy moves btn in shop
     public void buyMoves()
     {
+        //if sound on,play click sound
+        if (gameStats.soundOn)
+        {
+            SoundController.playSound("click");
+        }
+
         //check to see if user have enough gold
         if (gameStats.goldAmount >= 10)
         {   //10 is price for moves 

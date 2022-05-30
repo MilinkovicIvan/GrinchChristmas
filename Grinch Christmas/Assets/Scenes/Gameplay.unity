@@ -4919,6 +4919,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1033410919}
     - target: {fileID: 8938567736345675193, guid: f084aa8d9574a99499565227e39007fb, type: 3}
+      propertyPath: loginURI
+      value: https://grinch-christmas.herokuapp.com/authentication/login
+      objectReference: {fileID: 0}
+    - target: {fileID: 8938567736345675193, guid: f084aa8d9574a99499565227e39007fb, type: 3}
+      propertyPath: createURI
+      value: https://grinch-christmas.herokuapp.com/authentication/create
+      objectReference: {fileID: 0}
+    - target: {fileID: 8938567736345675193, guid: f084aa8d9574a99499565227e39007fb, type: 3}
       propertyPath: movesText
       value: 
       objectReference: {fileID: 348079052}
@@ -4939,13 +4947,25 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1962501360}
     - target: {fileID: 8938567736345675193, guid: f084aa8d9574a99499565227e39007fb, type: 3}
+      propertyPath: fetchProgressURI
+      value: https://grinch-christmas.herokuapp.com/progress/fetch
+      objectReference: {fileID: 0}
+    - target: {fileID: 8938567736345675193, guid: f084aa8d9574a99499565227e39007fb, type: 3}
       propertyPath: shopAlertMessage
       value: 
       objectReference: {fileID: 748247255}
     - target: {fileID: 8938567736345675193, guid: f084aa8d9574a99499565227e39007fb, type: 3}
+      propertyPath: createProgressURI
+      value: https://grinch-christmas.herokuapp.com/progress/create
+      objectReference: {fileID: 0}
+    - target: {fileID: 8938567736345675193, guid: f084aa8d9574a99499565227e39007fb, type: 3}
       propertyPath: rewardedAdsButton
       value: 
       objectReference: {fileID: 1986026650}
+    - target: {fileID: 8938567736345675193, guid: f084aa8d9574a99499565227e39007fb, type: 3}
+      propertyPath: updateProgressURI
+      value: https://grinch-christmas.herokuapp.com/progress/update
+      objectReference: {fileID: 0}
     - target: {fileID: 8951137612042772676, guid: f084aa8d9574a99499565227e39007fb, type: 3}
       propertyPath: m_Name
       value: GameManager
