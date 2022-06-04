@@ -17,6 +17,10 @@ public class MenuController : MonoBehaviour
 
     //link to settings panel ui
     public GameObject settingsUI;
+    //links to guide panels and btn
+    public GameObject guideBtn;
+    public GameObject guidePanel1;
+    public GameObject guidePanel2;
 
     //link to shop
     public GameObject shop;
@@ -144,6 +148,45 @@ public class MenuController : MonoBehaviour
         }
 
         settingsUI.SetActive(true);
+        guideBtn.SetActive(true);
+        guidePanel1.SetActive(false);
+        guidePanel2.SetActive(false);
+    }
+
+    //function which will show guide panel
+    public void showGuide() {
+        //if sound on,play click sound
+        if (gameStats.soundOn)
+        {
+            SoundController.playSound("click");
+        }
+        guideBtn.SetActive(false);
+        guidePanel1.SetActive(true);
+        guidePanel2.SetActive(false);
+
+    }
+
+
+    //function which will display different panels when next btn is clicked in guide
+    public void nextGuidePanel(int fromPanel) {
+        //if sound on,play click sound
+        if (gameStats.soundOn)
+        {
+            SoundController.playSound("click");
+        }
+
+        if (fromPanel == 1) {
+            guideBtn.SetActive(false);
+            guidePanel1.SetActive(false);
+            guidePanel2.SetActive(true);
+        }
+
+        if (fromPanel == 2)
+        {
+            guideBtn.SetActive(true);
+            guidePanel1.SetActive(false);
+            guidePanel2.SetActive(false);
+        }
     }
 
     // function to open shop window when shop btn is clicked

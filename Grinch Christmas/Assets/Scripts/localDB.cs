@@ -8,35 +8,64 @@ using System.IO;    //used to check if file exist
 public class localDB : MonoBehaviour
 {
     // name of the db and its location
-    private string localDBName = "URI=file:progress.db";
-    //"URI=file:" + Application.persistentDataPath + "/Inventory.db";
-    //private string localDBName = "URI=file:" + Application.persistentDataPath + "/progress.db";
-    //private string localDBName = "URI=file:" + Application.persistentDataPath + "/progress.db";
-    /*   private string localDBName;
+    private string localDBName;
 
-       private void Awake()
-       {
-           localDBName = Application.persistentDataPath + "/progress.db";
-       }*/
-
-/*    private string localDBName;
-
-    private void Awake()
-    {
-        localDBName = "URI=file:" + Application.persistentDataPath + "/progress.db";
-    }*/
-
+    void Awake() { 
+        if (Application.platform != RuntimePlatform.Android)
+        {
+            localDBName = "URI=file:progress.db";
+        }
+        else
+        {
+            localDBName = "URI=file:" + Application.persistentDataPath + "/progress.db";
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
+        /////// MOBILE
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            //check if db exist
+            if (File.Exists(Application.persistentDataPath + "/progress.db"))
+            {
+                //Debug.Log("DB already exists");
+            }
+
+            //if not,create it
+            else
+            {
+                //create file
+                string location = Application.persistentDataPath + "/progress.db";
+
+                WWW load = new WWW("jar:file://" + Application.dataPath + "!/assets/progress.db");
+                while (!load.isDone) { }
+
+                File.WriteAllBytes(location, load.bytes);
+
+
+                // creating local db
+                createLocalDB();
+
+                // adding values to progress table columns 
+                addProgressValues(1, 5, 20, "2,1,1,0,0,0,0,0,0,0");
+
+                //update gameStats values
+                gameStats.firstTimer = true;
+
+            }
+        }
+
+        /////// DESKTOP
+
         //check if db exist
-        //if (File.Exists(Application.persistentDataPath + "/progress.db"))
         if (File.Exists("progress.db"))
         {
             //Debug.Log("DB already exists");
         }
+
         //if not,create it
-        else 
+        else
         {
             // creating local db
             createLocalDB();
@@ -46,78 +75,40 @@ public class localDB : MonoBehaviour
 
             //update gameStats values
             gameStats.firstTimer = true;
-/*
-            // displaying progress from db
-            int currentLv = getCurrentLv();
-            Debug.Log("Current LV: " + currentLv);
-            int currentLife = getLifeAmount();
-            Debug.Log("Current LIFE: " + currentLife);
-            int currentGold = getGoldAmount();
-            Debug.Log("Current GOLD: " + currentGold);
-            string powerupsFromDB = getPowerups();
-            Debug.Log("Powerups string from DB: " + powerupsFromDB);
-            
-            //tests for updates
-            // updating progress
-            updateCurrentLv(6);
-            updateLifeAmount(3);
-            updateGoldAmount(15);
-            updatePowerups(0,"5");
 
-            // displaying progress from db
-            Debug.Log("AFTER UPDATES");
-
-            int updatedLv = getCurrentLv();
-            Debug.Log("Updated LV: " + updatedLv);
-            int updatedLife = getLifeAmount();
-            Debug.Log("Updated LIFE: " + updatedLife);
-            int updatedGold = getGoldAmount();
-            Debug.Log("Updated GOLD: " + updatedGold);
-            string updatedPowerupsFromDB = getPowerups();
-            Debug.Log("Updated powerups string from DB: " + updatedPowerupsFromDB);
-
-            //test for update all values in progress table
-            updateProgressValues(1, 5, 20, "2,1,1,0,0,0,0,0,0,0");
-
-            // displaying progress from db
-            updatedLv = getCurrentLv();
-            Debug.Log("Updated LV: " + updatedLv);
-            updatedLife = getLifeAmount();
-            Debug.Log("Updated LIFE: " + updatedLife);
-            updatedGold = getGoldAmount();
-            Debug.Log("Updated GOLD: " + updatedGold);
-            updatedPowerupsFromDB = getPowerups();
-            Debug.Log("Updated powerups string from DB: " + updatedPowerupsFromDB);
-*/
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     // method for creating table if it doesnt exist already
-    public void createLocalDB() {
+    public void createLocalDB()
+    {
         // db connection
-        using (var connection = new SqliteConnection(localDBName)) {
+        using (var connection = new SqliteConnection(localDBName))
+        {
             //open connection
             connection.Open();
 
             // command object for db control
-            using (var command = connection.CreateCommand()) {
+            using (var command = connection.CreateCommand())
+            {
                 // creating the table
                 command.CommandText = "CREATE TABLE IF NOT EXISTS progress (currentLv INT, lifeAmount INT, goldAmount INT, powerups VARCHAR(50));";
                 command.ExecuteNonQuery();
             }
             //close connection
-            connection.Close();              
+            connection.Close();
         }
     }
 
     // method which will insert values into the progress table
-    public void addProgressValues(int lv, int life, int gold, string powerups) {
+    public void addProgressValues(int lv, int life, int gold, string powerups)
+    {
         // db connection
         using (var connection = new SqliteConnection(localDBName))
         {
@@ -158,14 +149,16 @@ public class localDB : MonoBehaviour
     }
 
     //convert string to list method,returns list of powerups values
-    public List<string> convertStringToList(string powerupsString) {
+    public List<string> convertStringToList(string powerupsString)
+    {
         //empty list
         List<string> listToReturn = new List<string>();
 
         //loop through given string, and add chars to list if they are not ","
         for (int i = 0; i < powerupsString.Length; i++)
         {
-            if (powerupsString[i].ToString() is not ","){
+            if (powerupsString[i].ToString() is not ",")
+            {
                 //Debug.Log("Adding to List: " + powerupsString[i]);
                 listToReturn.Add(powerupsString[i].ToString());
             }
@@ -175,7 +168,8 @@ public class localDB : MonoBehaviour
     }
 
     //convert list to string
-    public string convertListToString(List<string> list) {
+    public string convertListToString(List<string> list)
+    {
         // new string for return
         string returnString = "";
 
@@ -187,11 +181,12 @@ public class localDB : MonoBehaviour
             {
                 returnString = returnString + list[i].ToString();
             }
-            else { 
+            else
+            {
                 returnString = returnString + list[i].ToString() + ",";
-            }          
+            }
         }
-        return returnString;   
+        return returnString;
     }
 
     // method to gets powerups from progress table and returns them as string
@@ -234,7 +229,7 @@ public class localDB : MonoBehaviour
     {
         // getting current powerups from DB
         string currentStringFromDB = getPowerups();
-        
+
         //converting that string to list
         List<string> powerupsList = convertStringToList(currentStringFromDB);
 
@@ -336,7 +331,8 @@ public class localDB : MonoBehaviour
     }
 
     // method which will show currentLv in progress table
-    public int getCurrentLv() {
+    public int getCurrentLv()
+    {
         int currentLv = -1;
         // db connection
         using (var connection = new SqliteConnection(localDBName))
@@ -351,15 +347,15 @@ public class localDB : MonoBehaviour
                 command.CommandText = "SELECT currentLv FROM progress;";
 
                 //iterating through progress set
-                using (IDataReader reader = command.ExecuteReader()) 
+                using (IDataReader reader = command.ExecuteReader())
                 {
-                    if (reader.Read()) 
+                    if (reader.Read())
                     {
-                        currentLv = (int) reader["currentLv"];
+                        currentLv = (int)reader["currentLv"];
                         //Debug.Log("Current LV: " + reader["currentLv"]);
-                    }                                                                                     
-                    reader.Close();                                     
-                }              
+                    }
+                    reader.Close();
+                }
             }
             //close connection
             connection.Close();
@@ -389,7 +385,7 @@ public class localDB : MonoBehaviour
                 {
                     if (reader.Read())
                     {
-                        currentLife = (int) reader["lifeAmount"];
+                        currentLife = (int)reader["lifeAmount"];
                         //Debug.Log("Life: " + reader["lifeAmount"]);
                     }
                     reader.Close();
@@ -423,7 +419,7 @@ public class localDB : MonoBehaviour
                 {
                     if (reader.Read())
                     {
-                        currentGold = (int) reader["goldAmount"];
+                        currentGold = (int)reader["goldAmount"];
                         //Debug.Log("Gold: " + reader["goldAmount"]);
                     }
                     reader.Close();

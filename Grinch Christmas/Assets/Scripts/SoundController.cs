@@ -5,6 +5,7 @@ using UnityEngine;
 public class SoundController : MonoBehaviour
 {
     public static AudioClip clickSound;
+    public static AudioClip badclickSound;
     public static AudioClip music;
     public static AudioSource audioSource;
     public static AudioSource musicSource;
@@ -14,11 +15,12 @@ public class SoundController : MonoBehaviour
     {
         //load sounds
         clickSound = Resources.Load<AudioClip>("clickSound");
+        badclickSound = Resources.Load<AudioClip>("badclickSound");
         music = Resources.Load<AudioClip>("music");
 
         //ref to audio src component
         audioSource = gameObject.AddComponent<AudioSource>();
-        musicSource = gameObject.AddComponent<AudioSource>();
+        musicSource = gameObject.AddComponent<AudioSource>();       
     }
 
     // Update is called once per frame
@@ -45,6 +47,9 @@ public class SoundController : MonoBehaviour
         {
             case "click":
                 audioSource.PlayOneShot(clickSound);
+                break;
+            case "badclick":
+                audioSource.PlayOneShot(badclickSound);
                 break;
         }
     }
