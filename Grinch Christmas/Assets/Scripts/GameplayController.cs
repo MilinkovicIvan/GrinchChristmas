@@ -140,6 +140,10 @@ public class GameplayController : MonoBehaviour
     public static bool userUsedHammerPowerup = false;
     public static bool userUsedBombPowerup = false;
 
+    //ref to localDB script and menu controller for corutines
+    public localDB localDB;
+    public MenuController myMenuController;
+
 
     // Start is called before the first frame update
     void Start()
@@ -170,6 +174,10 @@ public class GameplayController : MonoBehaviour
         for (int i = 1; i < gameStats.currentLv; i++) {
             mapBtnArray[i].GetComponent<Image>().color = new Color32(0, 255, 0, 255);  //green
         }
+
+        //link to components that are doing database updates
+        localDB = GameObject.Find("GameManager").GetComponent<localDB>();
+        myMenuController = GameObject.Find("GameManager").GetComponent<MenuController>();
     }
 
     // Update is called once per frame
@@ -414,7 +422,7 @@ public class GameplayController : MonoBehaviour
             movesLeft = 10;
             movesLeftText.text = movesLeft.ToString();
 
-            goalGiftsLeft = 20;
+            goalGiftsLeft = 21;
             goalGiftText.text = goalGiftsLeft.ToString();
             goalGiftImage.GetComponent<Image>().color = new Color32(255, 0, 255, 255);  //pink
 
@@ -521,17 +529,21 @@ public class GameplayController : MonoBehaviour
             endY = (int)Input.GetTouch(0).position.y;
         }
 
-        //reduce movesLeft and update ui
-        movesLeft -= 1;
-        movesLeftText.text = movesLeft.ToString();
-
         //now that we have starting and ending coordinates we can figure out which gift user is trying to swap
         calcWhichGifts();
         //calc drag direction
         calcWhichDirection();
+        //if starting and ending points are the same just exit, dont want to punish user for most likely bad drag due to finger size
+        if (startingRow == endingRow && startingCol == endingCol)
+        {
+            return;
+        }
         //swap gift colors and update grid
         swapGiftColors();
         setGiftColors();
+        //reduce movesLeft and update ui
+        movesLeft -= 1;
+        movesLeftText.text = movesLeft.ToString();
         //check for 3 same,change their colors and update grid
         checkForSameColor(endingRow, endingCol);
         setGiftColors();
@@ -593,11 +605,6 @@ public class GameplayController : MonoBehaviour
 
             //turn off retry btn
             retryLvButton.SetActive(false);
-            //since we have only 3 lvs for now,turn off next lv btn once lv 3 is done
-            if (levelSelected == 4)
-            {
-                nextLvButton.SetActive(false);
-            }
 
             //update title and message of postLevel
             postLevelTitle.text = "Congratz !!!";
@@ -608,12 +615,30 @@ public class GameplayController : MonoBehaviour
             //Debug.Log(levelSelected);
             //Debug.Log(gameStats.currentLv);
 
+            //since we have only 3 lvs for now,turn off next lv btn once lv 3 is done
+            if (gameStats.currentLv > 3)
+            {
+                nextLvButton.SetActive(false);
+            }
+
             for (int i = 1; i < gameStats.currentLv; i++)
             {
                 mapBtnArray[i].GetComponent<Image>().color = new Color32(0, 255, 0, 255);  //green
             }
 
-
+            //update databases
+            if (gameStats.userLoggedin == true)
+            {
+                //update local db
+                localDB.updateProgressValues(gameStats.currentLv, gameStats.lifeAmount, gameStats.goldAmount, gameStats.powerups);
+                //update online database
+                myMenuController.StartCoroutine(myMenuController.updateOnlineProgressRecord());
+            }
+            else
+            {
+                //update local db
+                localDB.updateProgressValues(gameStats.currentLv, gameStats.lifeAmount, gameStats.goldAmount, gameStats.powerups);
+            }
         }
         //lose state
         else if (movesLeft < 1 && goalGiftsLeft > 0)

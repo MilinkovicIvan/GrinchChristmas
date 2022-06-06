@@ -15,6 +15,11 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
     //link to gold text
     public TextMeshProUGUI goldText;
 
+    //ref to localDB script and menu controller for corutines
+    public localDB localDB;
+    public MenuController myMenuController;
+
+
     void Awake()
     {
         // Get the Ad Unit ID for the current platform:
@@ -26,6 +31,12 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
 
         //Disable the button until the ad is ready to show:
         _showAdButton.interactable = false;
+    }
+
+    void Start() {
+        //link to components that are doing database updates
+        localDB = GameObject.Find("GameManager").GetComponent<localDB>();
+        myMenuController = GameObject.Find("GameManager").GetComponent<MenuController>();
     }
 
     // Load content to the Ad Unit:
@@ -75,6 +86,19 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
             gameStats.goldAmount += 10;
             //update gold ui
             goldText.text = gameStats.goldAmount.ToString();
+
+            //update databases
+            if (gameStats.userLoggedin == true)
+            {
+                //update local db
+                localDB.updateProgressValues(gameStats.currentLv, gameStats.lifeAmount, gameStats.goldAmount, gameStats.powerups);
+                //update online database
+                myMenuController.StartCoroutine(myMenuController.updateOnlineProgressRecord());
+            }
+            else {
+                //update local db
+                localDB.updateProgressValues(gameStats.currentLv, gameStats.lifeAmount, gameStats.goldAmount, gameStats.powerups);
+            }
 
             // Load another ad:
             Advertisement.Load(_adUnitId, this);

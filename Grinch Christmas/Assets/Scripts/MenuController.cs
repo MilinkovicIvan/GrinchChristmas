@@ -21,6 +21,7 @@ public class MenuController : MonoBehaviour
     public GameObject guideBtn;
     public GameObject guidePanel1;
     public GameObject guidePanel2;
+    public GameObject guidePanel3;
 
     //link to shop
     public GameObject shop;
@@ -124,13 +125,10 @@ public class MenuController : MonoBehaviour
 
             //make a online progress record
             StartCoroutine(createOnlineProgressRecord());
-
         }
-        //this will work second time user login
-        else if (gameStats.userLoggedin == true) 
-        {
-            //update record with dummy data for now
-            StartCoroutine(updateOnlineProgressRecord());
+        else if (gameStats.userLoggedin == true) {
+            //make a online progress record
+            StartCoroutine(createOnlineProgressRecord());
         }
         
         //turn off login ui
@@ -151,6 +149,7 @@ public class MenuController : MonoBehaviour
         guideBtn.SetActive(true);
         guidePanel1.SetActive(false);
         guidePanel2.SetActive(false);
+        guidePanel3.SetActive(false);
     }
 
     //function which will show guide panel
@@ -163,6 +162,7 @@ public class MenuController : MonoBehaviour
         guideBtn.SetActive(false);
         guidePanel1.SetActive(true);
         guidePanel2.SetActive(false);
+        guidePanel3.SetActive(false);
 
     }
 
@@ -179,13 +179,23 @@ public class MenuController : MonoBehaviour
             guideBtn.SetActive(false);
             guidePanel1.SetActive(false);
             guidePanel2.SetActive(true);
+            guidePanel3.SetActive(false);
         }
 
         if (fromPanel == 2)
         {
+            guideBtn.SetActive(false);
+            guidePanel1.SetActive(false);
+            guidePanel2.SetActive(false);
+            guidePanel3.SetActive(true);
+        }
+
+        if (fromPanel == 3)
+        {
             guideBtn.SetActive(true);
             guidePanel1.SetActive(false);
             guidePanel2.SetActive(false);
+            guidePanel3.SetActive(false);
         }
     }
 
@@ -468,8 +478,8 @@ public class MenuController : MonoBehaviour
             //increase time
             startTime += Time.deltaTime;
 
-            //if time is more than 5sec, break the loop
-            if (startTime > 5.0f) 
+            //if time is more than 10sec, break the loop
+            if (startTime > 10.0f) 
             {
                 break;
             }
@@ -493,8 +503,8 @@ public class MenuController : MonoBehaviour
                 createButton.interactable = false;
                 loginButton.interactable = false;
 
-                Debug.Log(gameStats.userLoggedin + " from menuController, userLoggedIn");
-                Debug.Log(gameStats.username);
+                //Debug.Log(gameStats.userLoggedin + " from menuController, userLoggedIn");
+                //Debug.Log(gameStats.username);
             }
             else 
             {
@@ -551,8 +561,8 @@ public class MenuController : MonoBehaviour
             //increase time
             startTime += Time.deltaTime;
 
-            //if time is more than 5sec, break the loop
-            if (startTime > 5.0f)
+            //if time is more than 10sec, break the loop
+            if (startTime > 10.0f)
             {
                 break;
             }
@@ -597,8 +607,8 @@ public class MenuController : MonoBehaviour
             //increase time
             startTime += Time.deltaTime;
 
-            //if time is more than 5sec, break the loop
-            if (startTime > 5.0f)
+            //if time is more than 10sec, break the loop
+            if (startTime > 10.0f)
             {
                 break;
             }
@@ -642,12 +652,12 @@ public class MenuController : MonoBehaviour
     }
 
     // coroutine which will send web request to our server and try updating progress record
-    private IEnumerator updateOnlineProgressRecord()
+    public IEnumerator updateOnlineProgressRecord()
     {
         //creating form that will be send within the request, will hold values needed for updating progress record
         WWWForm form = new WWWForm();
         form.AddField("reqUsername", gameStats.username);
-        form.AddField("reqCurrentLv", 999);     //change later 999 to gameStats.currentLv
+        form.AddField("reqCurrentLv", gameStats.currentLv);
         form.AddField("reqLifeAmount", gameStats.lifeAmount);
         form.AddField("reqGoldAmount", gameStats.goldAmount);
         form.AddField("reqPowerups", gameStats.powerups);
@@ -665,8 +675,8 @@ public class MenuController : MonoBehaviour
             //increase time
             startTime += Time.deltaTime;
 
-            //if time is more than 5sec, break the loop
-            if (startTime > 5.0f)
+            //if time is more than 10sec, break the loop
+            if (startTime > 10.0f)
             {
                 break;
             }
